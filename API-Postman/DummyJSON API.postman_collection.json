@@ -1,0 +1,994 @@
+{
+  "info": {
+    "_postman_id": "5511295d-5d8c-4c70-bf17-f91662728d13",
+    "name": "DummyJSON API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51082390",
+    "_collection_link": "https://go.postman.co/collection/51082390-5511295d-5d8c-4c70-bf17-f91662728d13?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Authentication Folder",
+      "item": [
+        {
+          "name": "auth/login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Login successful\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(pm.response.json()).to.have.property('accessToken');",
+                  "});",
+                  "",
+                  "pm.test(\"Store tokens\", () => {",
+                  "    const json = pm.response.json();",
+                  "    pm.environment.set(\"access_token\", json.accessToken);",
+                  "    pm.environment.set(\"refresh_token\", json.refreshToken);",
+                  "    pm.environment.set(\"user_id\", json.id);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"emilys\",\n    \"password\": \"emilyspass\",\n    \"expiresInMins\": 30\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://dummyjson.com/auth/login",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "#### **1.1 POST /auth/login**\n\n**Description**: Authenticates a user and returns access/refresh tokens\n\n**Endpoint**: POST https://dummyjson.com/auth/login\n\n**Request Body**:\n\n{  \n\"username\": \"emilys\",  \n\"password\": \"emilyspass\",  \n\"expiresInMins\": 30  \n}\n\n**Success Response (200)**:\n\n{  \n\"id\": 15,  \n\"username\": \"emilys\",  \n\"email\": \"[emily.johnson@x.dummyjson.com](https://mailto:emily.johnson@x.dummyjson.com)\",  \n\"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",  \n\"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"  \n}\n\n**Tests:**\n\nVerify status code is 200\n\nVerify response contains accessToken\n\nStore tokens in environment variables"
+          },
+          "response": []
+        },
+        {
+          "name": "auth/me",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Authenticated access\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"User basic data exists\", () => {",
+                  "    const json = pm.response.json();",
+                  "",
+                  "    pm.expect(json).to.include.all.keys(",
+                  "        \"id\",",
+                  "        \"username\",",
+                  "        \"email\"",
+                  "    );",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://dummyjson.com/auth/me",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            },
+            "description": "| Endpoint | GET https://dummyjson.com/auth/me |\n| --- | --- |\n| Headers: | Authorization: Bearer {{access_token}} |\n\n**Success Response (200)**:\n\n{  \n\"id\": 15,  \n\"username\": \"emilys\",  \n\"email\": \"[emily.johnson@x.dummyjson.com](https://mailto:emily.johnson@x.dummyjson.com)\",  \n\"firstName\": \"Emily\",  \n\"lastName\": \"Johnson\"  \n}\n\n**Tests**:\n\nVerify status code is 200\n\nVerify response contains id, username, email"
+          },
+          "response": []
+        },
+        {
+          "name": "auth/refresh",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Token refreshed\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(pm.response.json()).to.have.property('accessToken');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"refreshToken\": \"{{refresh_token}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://dummyjson.com/auth/refresh",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "auth",
+                "refresh"
+              ]
+            },
+            "description": "#### **1.3 POST /auth/refresh**\n\n**Description**: Refreshes access token using refresh token\n\n**Endpoint**: POST https://dummyjson.com/auth/refresh\n\n**Request Body**:\n\n{  \n\"refreshToken\": \"{{refresh_token}}\"  \n}\n\n**Success Response (200)**:\n\n{  \n\"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"  \n}\n\n**Tests**:\n\nVerify status code is 200\n\nVerify response contains new accessToken"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Products Folder",
+      "item": [
+        {
+          "name": "products (list)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Products list returned\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.products).to.be.an('array');",
+                  "    pm.expect(json.products.length).to.equal(5);",
+                  "});",
+                  "",
+                  "pm.test(\"Store first product ID\", () => {",
+                  "    const productId = pm.response.json().products[0].id;",
+                  "    pm.environment.set(\"product_id\", productId);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://dummyjson.com/products?limit=5",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "5"
+                }
+              ]
+            },
+            "description": "#### **2.1 GET /products (list)**\n\n**Description**: Retrieves a list of products with pagination\n\n**Endpoint**: GET https://dummyjson.com/products?limit=5\n\n**Query Parameters**:\n\nlimit: Number of products to return (default: 30)\n\n**Success Response (200)**:\n\n{  \n\"products\": \\[...\\],  \n\"total\": 100,  \n\"skip\": 0,  \n\"limit\": 5  \n}\n\n**Tests**:\n\nVerify status code is 200\n\nVerify products array exists\n\nVerify 5 products returned\n\nStore first product ID"
+          },
+          "response": []
+        },
+        {
+          "name": "products/{id} with csv file",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Get data safely",
+                  "let productId, expectedStatus;",
+                  "",
+                  "try {",
+                  "    productId = pm.iterationData.get(\"product_id\");",
+                  "    expectedStatus = pm.iterationData.get(\"expected_status\");",
+                  "    ",
+                  "    console.log(\"📊 CSV Data Read:\");",
+                  "    console.log(\"- product_id:\", productId);",
+                  "    console.log(\"- expected_status:\", expectedStatus);",
+                  "    ",
+                  "} catch (error) {",
+                  "    console.error(\"❌ Error reading CSV:\", error.message);",
+                  "    productId = \"1\"; // default",
+                  "    expectedStatus = \"200\";",
+                  "}",
+                  "",
+                  "// Convert with validation",
+                  "const productIdNum = isNaN(parseInt(productId, 10)) ? 1 : parseInt(productId, 10);",
+                  "const expectedStatusNum = isNaN(parseInt(expectedStatus, 10)) ? 200 : parseInt(expectedStatus, 10);",
+                  "",
+                  "console.log(\"🔢 Converted Values:\");",
+                  "console.log(\"- productIdNum:\", productIdNum);",
+                  "console.log(\"- expectedStatusNum:\", expectedStatusNum);",
+                  "",
+                  "// Main tests",
+                  "pm.test(`Status should be ${expectedStatusNum}`, () => {",
+                  "    pm.response.to.have.status(expectedStatusNum);",
+                  "});",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    const json = pm.response.json();",
+                  "    ",
+                  "    pm.test(`Product ID ${productIdNum} matches`, () => {",
+                  "        pm.expect(json.id).to.equal(productIdNum);",
+                  "    });",
+                  "    ",
+                  "    console.log(`✅ ${json.title} - $${json.price}`);",
+                  "}",
+                  "",
+                  "pm.test(\"Response < 2s\", () => {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://dummyjson.com/products/{{product_id}}",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "products",
+                "{{product_id}}"
+              ]
+            },
+            "description": "#### **2.2 GET /products/{id}**\n\n**Description**: Retrieves details of a specific product\n\n**Endpoint**: GET`https://dummyjson.com/products/{{product_id}}`\n\n**Success Response (200)**:\n\n{  \n\"id\": 1,  \n\"title\": \"iPhone 9\",  \n\"description\": \"An apple mobile...\",  \n\"price\": 549,  \n\"discountPercentage\": 12.96,  \n\"rating\": 4.69,  \n\"stock\": 94,  \n\"brand\": \"Apple\",  \n\"category\": \"smartphones\",  \n\"thumbnail\": \"...\",  \n\"images\": \\[...\\]  \n}\n\n**Tests**:\n\nVerify status code is 200\n\nVerify all product fields exist"
+          },
+          "response": []
+        },
+        {
+          "name": "products/search",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Search results\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.products).to.be.an('array');",
+                  "    pm.expect(json.total).to.be.a('number');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://dummyjson.com/products/search?q=phone&limit=3",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "products",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "phone"
+                },
+                {
+                  "key": "limit",
+                  "value": "3"
+                }
+              ]
+            },
+            "description": "#### **2.3 GET /products/search**\n\n**Description**: Searches products by query\n\n**Endpoint**: GET https://dummyjson.com/products/search?q=phone&limit=3\n\n**Query Parameters**:\n\nq: Search query\n\nlimit: Results limit\n\n**Success Response (200)**:\n\n{  \n\"products\": \\[...\\],  \n\"total\": 4,  \n\"skip\": 0,  \n\"limit\": 3  \n}\n\n**Tests**:\n\nVerify status code is 200\n\nVerify products array exists\n\nVerify total count is number"
+          },
+          "response": []
+        },
+        {
+          "name": "products/add",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Product created\", () => {",
+                  "    pm.response.to.have.status(201); // Created",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.id).to.be.a('number');",
+                  "    pm.environment.set(\"created_product_id\", json.id);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Test Product\",\n    \"description\": \"Test description\",\n    \"price\": 99.99,\n    \"stock\": 50\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://dummyjson.com/products/add",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "products",
+                "add"
+              ]
+            },
+            "description": "#### **2.4 POST /products/add**\n\n**Description**: Creates a new product\n\n**Endpoint**: POST https://dummyjson.com/products/add\n\n**Request Body**:\n\n{  \n\"title\": \"Test Product\",  \n\"description\": \"Test description\",  \n\"price\": 99.99,  \n\"stock\": 50  \n}\n\n**Success Response (201)**:\n\n{  \n\"id\": 101,  \n\"title\": \"Test Product\",  \n\"description\": \"Test description\",  \n\"price\": 99.99,  \n\"stock\": 50  \n}\n\n**Tests**:\n\nVerify status code is 201 (Created)\n\nVerify response contains ID\n\nStore created product ID"
+          },
+          "response": []
+        },
+        {
+          "name": "products/{id}",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Product updated\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.price).to.equal(149.99);",
+                  "    pm.expect(json.stock).to.equal(30);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"price\": 149.99,\n    \"stock\": 30\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://dummyjson.com/products/1",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "products",
+                "1"
+              ]
+            },
+            "description": "#### **2.5 PUT /products/{id}**\n\n**Description**: Updates an existing product\n\n**Endpoint**: PUT https://dummyjson.com/products/1\n\n**Request Body**:\n\n{  \n\"price\": 149.99,  \n\"stock\": 30  \n}\n\n**Success Response (200)**:\n\n{  \n\"id\": 1,  \n\"title\": \"iPhone 9\",  \n\"price\": 149.99,  \n\"stock\": 30,  \n...other fields  \n}\n\n**Tests**:\n\nVerify status code is 200\n\nVerify price and stock updated"
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE/Product1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Product deleted\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.property(\"isDeleted\", true);",
+                  "    pm.expect(json).to.have.property(\"id\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "https://dummyjson.com/products/1",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "products",
+                "1"
+              ]
+            },
+            "description": "#### **2.6 DELETE /products/{id}**\n\n**Description**: Deletes a product (soft delete)\n\n**Endpoint**: DELETE https://dummyjson.com/products/1\n\n**Success Response (200)**:\n\n{  \n\"id\": 1,  \n\"title\": \"iPhone 9\",  \n\"isDeleted\": true,  \n\"deletedOn\": \"2024-01-26T10:00:00.000Z\"  \n}\n\n**Tests**:\n\nVerify status code is 200\n\nVerify isDeleted is true"
+          },
+          "response": []
+        },
+        {
+          "name": "products/{id} - 404 Not Found",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Should return 404 for non-existent product\", () => {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test(\"Error message contains 'not found'\", () => {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('message');",
+                  "    pm.expect(json.message).to.include('not found');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://dummyjson.com/products/999999",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "products",
+                "999999"
+              ]
+            },
+            "description": "#### **2.7 GET /products/{id} - 404 Not Found (Negative)**\n\n**Description**: Tests non-existent product retrieval\n\n**Endpoint**: GET https://dummyjson.com/products/999999\n\n**Error Response (404)**:\n\n{  \n\"message\": \"Product with id '999999' not found\"  \n}\n\n**Tests**:\n\nVerify status code is 404\n\nVerify error message contains \"not found\""
+          },
+          "response": []
+        },
+        {
+          "name": "products/{id} - Product Not Found",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Should return 404 for non-existent product\", () => {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains error message\", () => {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('message');",
+                  "    pm.expect(json.message).to.include('not found');",
+                  "    ",
+                  "    console.log(\"Error message:\", json.message);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://dummyjson.com/products/999999",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "products",
+                "999999"
+              ]
+            },
+            "description": "#### **2.8 GET /products/{id} - Product Not Found (Negative Duplicate)**\n\n**Description**: Another negative test for non-existent product\n\n**Endpoint**: `GET https://dummyjson.com/products/999999`\n\n**Tests**: Same as 2.7"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Carts Folder",
+      "item": [
+        {
+          "name": "carts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Carts list\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.carts).to.be.an('array');",
+                  "    pm.environment.set(\"cart_id\", json.carts[0].id);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://dummyjson.com/carts?limit=3",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "carts"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "3"
+                }
+              ]
+            },
+            "description": "#### **3.1 GET /carts**\n\n**Description**: Retrieves list of carts\n\n**Endpoint**: `GET https://dummyjson.com/carts?limit=3`\n\n**Query Parameters**:\n\n`limit`: Number of carts to return\n\n**Success Response (200)**:\n\n{  \n\"carts\": \\[...\\],  \n\"total\": 20,  \n\"skip\": 0,  \n\"limit\": 3  \n}\n\n**Tests**:\n\nVerify status code is 200\n\nVerify carts array exists\n\nStore first cart ID"
+          },
+          "response": []
+        },
+        {
+          "name": "carts/{id}",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Cart details\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.id).to.equal(pm.environment.get(\"cart_id\"));",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://dummyjson.com/carts/{{cart_id}}",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "carts",
+                "{{cart_id}}"
+              ]
+            },
+            "description": "#### **3.2 GET /carts/{id}**\n\n**Description**: Retrieves specific cart details\n\n**Endpoint**: `GET https://dummyjson.com/carts/{{cart_id}}`\n\n**Success Response (200)**:\n\n{  \n\"id\": 1,  \n\"products\": \\[...\\],  \n\"total\": 2328,  \n\"userId\": 97  \n}\n\n**Tests**:\n\nVerify status code is 200\n\nVerify cart ID matches expected"
+          },
+          "response": []
+        },
+        {
+          "name": "carts/user/{userId}",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"User carts\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.carts).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://dummyjson.com/carts/user/{{user_id}}",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "carts",
+                "user",
+                "{{user_id}}"
+              ]
+            },
+            "description": "#### **3.3 GET /carts/user/{userId}**\n\n**Description**: Retrieves carts for a specific user\n\n**Endpoint**: `GET https://dummyjson.com/carts/user/{{user_id}}`\n\n**Success Response (200)**:\n\n{  \n\"carts\": \\[...\\],  \n\"total\": 1,  \n\"skip\": 0,  \n\"limit\": 10  \n}\n\n**Tests**:\n\nVerify status code is 200\n\nVerify carts array exists"
+          },
+          "response": []
+        },
+        {
+          "name": "carts/add",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Cart created\", () => {",
+                  "    pm.response.to.have.status(201);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.userId).to.equal(pm.environment.get(\"user_id\"));",
+                  "    pm.expect(json.total).to.be.a('number');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"userId\": {{user_id}},\n    \"products\": [\n        {\n            \"id\": {{product_id}},\n            \"quantity\": 2\n        }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://dummyjson.com/carts/add",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "carts",
+                "add"
+              ]
+            },
+            "description": "#### **3.4 POST /carts/add**\n\n**Description**: Creates a new cart\n\n**Endpoint**: `POST https://dummyjson.com/carts/add`\n\n**Request Body**:\n\n{  \n\"userId\": 15,  \n\"products\": \\[  \n{  \n\"id\": 1,  \n\"quantity\": 2  \n}  \n\\]  \n}\n\n**Success Response (201)**:\n\n{  \n\"id\": 21,  \n\"products\": \\[...\\],  \n\"total\": 1098,  \n\"userId\": 15  \n}\n\n**Tests**:\n\nVerify status code is 201\n\nVerify user ID matches\n\nVerify total is number"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users Folder",
+      "item": [
+        {
+          "name": "users (list users)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Users list returned\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.users).to.be.an('array');",
+                  "    if (json.users.length > 0) {",
+                  "        pm.environment.set(\"user_id_for_users\", json.users[0].id);",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://dummyjson.com/users?limit=3",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "3"
+                }
+              ]
+            },
+            "description": "#### **4.1 GET /users (list users)**\n\n**Description**: Retrieves list of users\n\n**Endpoint**: `GET https://dummyjson.com/users?limit=3`\n\n**Query Parameters**:\n\n`limit`: Number of users to return\n\n**Success Response (200)**:\n\n{  \n\"users\": \\[...\\],  \n\"total\": 100,  \n\"skip\": 0,  \n\"limit\": 3  \n}\n\n**Tests**:\n\nVerify status code is 200\n\nVerify users array exists\n\nStore first user ID"
+          },
+          "response": []
+        },
+        {
+          "name": "users/{id}",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"User details retrieved\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.include.all.keys('id', 'firstName', 'lastName', 'email');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://dummyjson.com/users/{{user_id}}",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "users",
+                "{{user_id}}"
+              ]
+            },
+            "description": "#### **4.2 GET /users/{id}**\n\n**Description**: Retrieves specific user details\n\n**Endpoint**: `GET https://dummyjson.com/users/{{user_id}}`\n\n**Success Response (200)**:\n\n{  \n\"id\": 15,  \n\"firstName\": \"Emily\",  \n\"lastName\": \"Johnson\",  \n\"email\": \"[emily.johnson@x.dummyjson.com](https://mailto:emily.johnson@x.dummyjson.com)\",  \n...  \n}\n\n**Tests**:\n\nVerify status code is 200\n\nVerify required fields exist"
+          },
+          "response": []
+        },
+        {
+          "name": "users/search",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Users search results\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.users).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://dummyjson.com/users/search?q=john",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "users",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "john"
+                }
+              ]
+            },
+            "description": "#### **4.3 GET /users/search**\n\n**Description**: Searches users by query\n\n**Endpoint**: `GET https://dummyjson.com/users/search?q=john`\n\n**Query Parameters**:\n\n`q`: Search query\n\n**Success Response (200)**:\n\n{  \n\"users\": \\[...\\],  \n\"total\": 5,  \n\"skip\": 0,  \n\"limit\": 10  \n}\n\n**Tests**:\n\nVerify status code is 200\n\nVerify users array exists"
+          },
+          "response": []
+        },
+        {
+          "name": "users/add",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"User created successfully\", () => {",
+                  "    pm.response.to.have.status(201);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('id');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"age\": 30,\n    \"email\": \"john.doe@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://dummyjson.com/users/add",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "users",
+                "add"
+              ]
+            },
+            "description": "#### **4.4 POST /users/add**\n\n**Description**: Creates a new user\n\n**Endpoint**: `POST https://dummyjson.com/users/add`\n\n**Request Body**:\n\n{  \n\"firstName\": \"John\",  \n\"lastName\": \"Doe\",  \n\"age\": 30,  \n\"email\": \"[john.doe@example.com](https://mailto:john.doe@example.com)\"  \n}\n\n**Success Response (201)**:\n\n{  \n\"id\": 101,  \n\"firstName\": \"John\",  \n\"lastName\": \"Doe\",  \n\"age\": 30,  \n\"email\": \"[john.doe@example.com](https://mailto:john.doe@example.com)\"  \n}\n\n**Tests**:\n\nVerify status code is 201\n\nVerify response contains ID"
+          },
+          "response": []
+        },
+        {
+          "name": "users/{id}",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"User updated successfully\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.firstName).to.equal(\"Updated\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"firstName\": \"Updated\",\n    \"age\": 35\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://dummyjson.com/users/{{user_id}}",
+              "protocol": "https",
+              "host": [
+                "dummyjson",
+                "com"
+              ],
+              "path": [
+                "users",
+                "{{user_id}}"
+              ]
+            },
+            "description": "#### **4.5 PUT /users/{id}**\n\n**Description**: Updates an existing user\n\n**Endpoint**: `PUT https://dummyjson.com/users/{{user_id}}`\n\n**Request Body**:\n\n{  \n\"firstName\": \"Updated\",  \n\"age\": 35  \n}\n\n**Success Response (200)**:\n\n{  \n\"id\": 15,  \n\"firstName\": \"Updated\",  \n\"age\": 35,  \n...other fields  \n}\n\n**Tests**:\n\nVerify status code is 200\n\nVerify firstName updated"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

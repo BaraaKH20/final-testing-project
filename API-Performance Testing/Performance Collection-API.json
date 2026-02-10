@@ -1,0 +1,150 @@
+{
+  "info": {
+    "_postman_id": "e4c46aa4-85cb-465a-b453-619f2b417a1c",
+    "name": "Performance Collection-API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51082390",
+    "_collection_link": "https://go.postman.co/collection/51082390-e4c46aa4-85cb-465a-b453-619f2b417a1c?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "products (list) Copy",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Products list returned\", () => {",
+              "    pm.response.to.have.status(200);",
+              "    const json = pm.response.json();",
+              "    pm.expect(json.products).to.be.an('array');",
+              "    pm.expect(json.products.length).to.equal(5);",
+              "});",
+              "",
+              "pm.test(\"Store first product ID\", () => {",
+              "    const productId = pm.response.json().products[0].id;",
+              "    pm.environment.set(\"product_id\", productId);",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://dummyjson.com/products?limit=5",
+          "protocol": "https",
+          "host": [
+            "dummyjson",
+            "com"
+          ],
+          "path": [
+            "products"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "5"
+            }
+          ]
+        },
+        "description": "#### **2.1 GET /products (list)**\n\n**Description**: Retrieves a list of products with pagination\n\n**Endpoint**: GET https://dummyjson.com/products?limit=5\n\n**Query Parameters**:\n\nlimit: Number of products to return (default: 30)\n\n**Success Response (200)**:\n\n{  \n\"products\": \\[...\\],  \n\"total\": 100,  \n\"skip\": 0,  \n\"limit\": 5  \n}\n\n**Tests**:\n\nVerify status code is 200\n\nVerify products array exists\n\nVerify 5 products returned\n\nStore first product ID"
+      },
+      "response": []
+    },
+    {
+      "name": "carts Copy",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Carts list\", () => {",
+              "    pm.response.to.have.status(200);",
+              "    const json = pm.response.json();",
+              "    pm.expect(json.carts).to.be.an('array');",
+              "    pm.environment.set(\"cart_id\", json.carts[0].id);",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://dummyjson.com/carts?limit=3",
+          "protocol": "https",
+          "host": [
+            "dummyjson",
+            "com"
+          ],
+          "path": [
+            "carts"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "3"
+            }
+          ]
+        },
+        "description": "#### **3.1 GET /carts**\n\n**Description**: Retrieves list of carts\n\n**Endpoint**: `GET https://dummyjson.com/carts?limit=3`\n\n**Query Parameters**:\n\n`limit`: Number of carts to return\n\n**Success Response (200)**:\n\n{  \n\"carts\": \\[...\\],  \n\"total\": 20,  \n\"skip\": 0,  \n\"limit\": 3  \n}\n\n**Tests**:\n\nVerify status code is 200\n\nVerify carts array exists\n\nStore first cart ID"
+      },
+      "response": []
+    },
+    {
+      "name": "users (list users) Copy",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Users list returned\", () => {",
+              "    pm.response.to.have.status(200);",
+              "    const json = pm.response.json();",
+              "    pm.expect(json.users).to.be.an('array');",
+              "    if (json.users.length > 0) {",
+              "        pm.environment.set(\"user_id_for_users\", json.users[0].id);",
+              "    }",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://dummyjson.com/users?limit=3",
+          "protocol": "https",
+          "host": [
+            "dummyjson",
+            "com"
+          ],
+          "path": [
+            "users"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "3"
+            }
+          ]
+        },
+        "description": "#### **4.1 GET /users (list users)**\n\n**Description**: Retrieves list of users\n\n**Endpoint**: `GET https://dummyjson.com/users?limit=3`\n\n**Query Parameters**:\n\n`limit`: Number of users to return\n\n**Success Response (200)**:\n\n{  \n\"users\": \\[...\\],  \n\"total\": 100,  \n\"skip\": 0,  \n\"limit\": 3  \n}\n\n**Tests**:\n\nVerify status code is 200\n\nVerify users array exists\n\nStore first user ID"
+      },
+      "response": []
+    }
+  ]
+}

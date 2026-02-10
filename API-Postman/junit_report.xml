@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="DummyJSON API" tests="100" time="19.081">
+  <testsuite name="Authentication Folder / auth/login" id="5968e893-bf7f-439e-aa14-40d3931d9721" timestamp="2026-01-26T18:52:59.599Z" tests="2" failures="0" errors="0" time="0.255">
+    <testcase name="Login successful" time="0.236" classname="AuthenticationFolderAuthLogin"/>
+    <testcase name="Store tokens" time="0.236" classname="AuthenticationFolderAuthLogin"/>
+  </testsuite>
+  <testsuite name="Authentication Folder / auth/me" id="ba107095-02d0-442f-a7db-7cd7c4fb0351" timestamp="2026-01-26T18:52:59.599Z" tests="2" failures="0" errors="0" time="0.187">
+    <testcase name="Authenticated access" time="0.188" classname="AuthenticationFolderAuthMe"/>
+    <testcase name="User basic data exists" time="0.188" classname="AuthenticationFolderAuthMe"/>
+  </testsuite>
+  <testsuite name="Authentication Folder / auth/refresh" id="3c874ac1-1050-4355-a6f2-86055958e655" timestamp="2026-01-26T18:52:59.599Z" tests="1" failures="0" errors="0" time="0.175">
+    <testcase name="Token refreshed" time="0.172" classname="AuthenticationFolderAuthRefresh"/>
+  </testsuite>
+  <testsuite name="Products Folder / products (list)" id="a713e1b4-d856-4560-943e-7a9698856d7a" timestamp="2026-01-26T18:52:59.599Z" tests="2" failures="0" errors="0" time="0.185">
+    <testcase name="Products list returned" time="0.168" classname="ProductsFolderProductsList"/>
+    <testcase name="Store first product ID" time="0.168" classname="ProductsFolderProductsList"/>
+  </testsuite>
+  <testsuite name="Products Folder / products/{id}" id="62d3a6ae-cb37-4de8-a419-faf7a30589ed" timestamp="2026-01-26T18:52:59.599Z" tests="2" failures="0" errors="0" time="0.141">
+    <testcase name="Status should be 200" time="0.165" classname="ProductsFolderProductsId"/>
+    <testcase name="Product ID 1 matches" time="0.165" classname="ProductsFolderProductsId"/>
+    <testcase name="Response &lt; 2s" time="0.165" classname="ProductsFolderProductsId"/>
+    <testcase name="Product ID 2 matches" time="0.165" classname="ProductsFolderProductsId"/>
+    <testcase name="Product ID 3 matches" time="0.165" classname="ProductsFolderProductsId"/>
+    <testcase name="Status should be 404" time="0.165" classname="ProductsFolderProductsId"/>
+  </testsuite>
+  <testsuite name="Products Folder / products/search" id="93c6398f-1a39-40ac-914f-810131fdb360" timestamp="2026-01-26T18:52:59.599Z" tests="1" failures="0" errors="0" time="0.235">
+    <testcase name="Search results" time="0.204" classname="ProductsFolderProductsSearch"/>
+  </testsuite>
+  <testsuite name="Products Folder / products/add" id="ac471a61-b229-4975-9a0f-f004b14d4647" timestamp="2026-01-26T18:52:59.599Z" tests="1" failures="0" errors="0" time="0.166">
+    <testcase name="Product created" time="0.166" classname="ProductsFolderProductsAdd"/>
+  </testsuite>
+  <testsuite name="Products Folder / products/{id}" id="7a5c1240-5d64-4338-8165-11fc0fb5fc7c" timestamp="2026-01-26T18:52:59.599Z" tests="1" failures="0" errors="0" time="0.243">
+    <testcase name="Product updated" time="0.191" classname="ProductsFolderProductsId"/>
+  </testsuite>
+  <testsuite name="Products Folder / DELETE/Product1" id="94213701-020c-4427-acc2-6b1de9d27889" timestamp="2026-01-26T18:52:59.599Z" tests="1" failures="0" errors="0" time="0.186">
+    <testcase name="Product deleted" time="0.190" classname="ProductsFolderDeleteProduct1"/>
+  </testsuite>
+  <testsuite name="Products Folder / products/{id} - 404 Not Found" id="7a260c29-c789-4d02-a8ca-591667d17330" timestamp="2026-01-26T18:52:59.599Z" tests="2" failures="0" errors="0" time="0.174">
+    <testcase name="Should return 404 for non-existent product" time="0.168" classname="ProductsFolderProductsId404NotFound"/>
+    <testcase name="Error message contains 'not found'" time="0.168" classname="ProductsFolderProductsId404NotFound"/>
+  </testsuite>
+  <testsuite name="Products Folder / products/{id} - Product Not Found" id="9a6409ab-722b-4284-b090-6838c67e5d5e" timestamp="2026-01-26T18:52:59.599Z" tests="2" failures="0" errors="0" time="0.180">
+    <testcase name="Should return 404 for non-existent product" time="0.162" classname="ProductsFolderProductsIdProductNotFound"/>
+    <testcase name="Response contains error message" time="0.162" classname="ProductsFolderProductsIdProductNotFound"/>
+  </testsuite>
+  <testsuite name="Carts Folder / carts" id="25e1c3c0-c904-4063-a185-3b4b99fb8b6f" timestamp="2026-01-26T18:52:59.599Z" tests="1" failures="0" errors="0" time="0.179">
+    <testcase name="Carts list" time="0.166" classname="CartsFolderCarts"/>
+  </testsuite>
+  <testsuite name="Carts Folder / carts/{id}" id="8467d052-c391-4718-8d55-51c79829b985" timestamp="2026-01-26T18:52:59.599Z" tests="1" failures="0" errors="0" time="0.167">
+    <testcase name="Cart details" time="0.168" classname="CartsFolderCartsId"/>
+  </testsuite>
+  <testsuite name="Carts Folder / carts/user/{userId}" id="f3c54e8d-ddc3-4283-a8ea-c6dbbca348a9" timestamp="2026-01-26T18:52:59.599Z" tests="1" failures="0" errors="0" time="0.177">
+    <testcase name="User carts" time="0.173" classname="CartsFolderCartsUserUserId"/>
+  </testsuite>
+  <testsuite name="Carts Folder / carts/add" id="3dc3fd69-1236-4686-9a58-fdab6a4a9a45" timestamp="2026-01-26T18:52:59.599Z" tests="1" failures="0" errors="0" time="0.199">
+    <testcase name="Cart created" time="0.226" classname="CartsFolderCartsAdd"/>
+  </testsuite>
+  <testsuite name="Users Folder / users (list users)" id="549abb4b-c19f-4718-ab75-d900bd5e122c" timestamp="2026-01-26T18:52:59.599Z" tests="1" failures="0" errors="0" time="0.203">
+    <testcase name="Users list returned" time="0.194" classname="UsersFolderUsersListUsers"/>
+  </testsuite>
+  <testsuite name="Users Folder / users/{id}" id="000e1dba-ce67-4baa-add7-18a1dd8e7e76" timestamp="2026-01-26T18:52:59.599Z" tests="1" failures="0" errors="0" time="0.175">
+    <testcase name="User details retrieved" time="0.165" classname="UsersFolderUsersId"/>
+  </testsuite>
+  <testsuite name="Users Folder / users/search" id="728e0b46-a1e3-4bc8-a9a0-4c9b64d7525a" timestamp="2026-01-26T18:52:59.599Z" tests="1" failures="0" errors="0" time="0.187">
+    <testcase name="Users search results" time="0.165" classname="UsersFolderUsersSearch"/>
+  </testsuite>
+  <testsuite name="Users Folder / users/add" id="f110a684-d750-42d8-afa5-f06f90600b0d" timestamp="2026-01-26T18:52:59.599Z" tests="1" failures="0" errors="0" time="0.224">
+    <testcase name="User created successfully" time="0.161" classname="UsersFolderUsersAdd"/>
+  </testsuite>
+  <testsuite name="Users Folder / users/{id}" id="94106c0e-11ec-47ce-bc38-f1e55f230d18" timestamp="2026-01-26T18:52:59.599Z" tests="1" failures="0" errors="0" time="0.177">
+    <testcase name="User updated successfully" time="0.162" classname="UsersFolderUsersId"/>
+  </testsuite>
+</testsuites>

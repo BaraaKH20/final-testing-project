@@ -1,0 +1,25 @@
+name: Initial Project Validation
+
+on: [push, workflow_dispatch]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      
+      - name: Show Project Structure
+        run: |
+          echo "=== FINAL TESTING PROJECT ==="
+          echo "Author: Baraa Hussien Abukhamesh"
+          echo "University: Al Hussein Technical University"
+          echo ""
+          echo "Folder Structure:"
+          find . -type f -name "*.java" -o -name "*.json" -o -name "*.js" -o -name "*.xlsx" | head -15
+          
+      - name: Validation Complete
+        run: |
+          echo "Project uploaded successfully!"
+          echo "GitHub Actions is now active"
+          echo "Go to: https://github.com/YOUR_USERNAME/final-testing-project/actions"
