@@ -14,9 +14,9 @@ Establish automation framework for regression testing
 Project Structure
 
 Final_Project/
-├── 📄 Final_Report.md           # Complete 35-page test report
-├── 📊 Presentation/             # 11-slide presentation
-├── 🧪 Testing_Artifacts/
+├── Final_Report.md           # Complete 35-page test report
+├── Presentation/             # 11-slide presentation
+├── Testing_Artifacts/
 │   ├── Manual_Testing/
 │   │   ├── test_cases.xlsx     # 20 manual test cases
 │   │   └── bug_report.xlsx     # 10 documented defects
@@ -30,10 +30,10 @@ Final_Project/
 │   └── UI_Automation/
 │       ├── MyTestCases.java
 │       └── testng_results.xml
-├── 📸 Visual_Evidence/
+├── Visual_Evidence/
 │   ├── bug_screenshots/        # 5 critical bug images
 │   └── test_reports/           # TestNG, Newman reports
-└── 📚 Documentation/
+└── Documentation/
     ├── Test_Plan.md
     └── README.md               # This file
 
